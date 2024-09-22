@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.db.models import Q, Count, Sum
+from datetime import date
 
 # Create your views here.
 # retrieves the user with the exact name pogba
@@ -23,14 +24,18 @@ q3 = q1.union(q2)
 # print("union query", q3)
 
 # values_list returns the selected fields as a turple
-q_list = User.objects.filter(username__startswith="p").values_list("first_name", "last_name", "email")
+q_list = User.objects.filter(username__startswith="p").values_list("first_name", "last_name", "email", named=True)
 
+print("values_list", q_list)
 # values-returns the selected fields as a dictionary
 q = User.objects.filter(username__startswith="p").values("first_name", "last_name", "email")
 
 # get the total number of users 
-print(User.objects.all().count())
+# print(User.objects.all().count())
 
-print("values", q)
+# print("values", q)
 q_annotate = User.objects.annotate(total_users=Count("username"))
-print("annotate", q_annotate)
+# print("annotate", q_annotate)
+
+currentdate = date.today().strftime("%A")
+print("current date", currentdate)
